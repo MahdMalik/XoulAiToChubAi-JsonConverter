@@ -127,7 +127,7 @@ export default function Home() {
       {hasError ? (<p>ERROR: {errMessage}</p>) : (<p></p>)}
       {chubData != "" ? (
         <div>
-          <p>File Ready! Click here To Download:</p>
+          <p>File Ready for {chubFileName}! Click here To Download:</p>
           <Button variant="contained" color="error" onClick={downloadFile}>Download New File For Chub</Button>
         </div>
         ) : (<p></p>)}
