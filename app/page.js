@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 
 export default function Home() {  
@@ -9,6 +9,12 @@ export default function Home() {
   const [errMessage, setErrMessage] = useState("")
   const [chubFileName, setChubName] = useState("")
   const [chubData, setChubData] = useState("")
+  const [recursiveScan, setRecursiveScan] = useState(false)
+  const [numEntries, setNumEntries] = useState(3)
+  const [numScanned, setScanCount] = useState(3)
+
+  //this is the max
+  const tokensPerLorebookEntry = 400;
 
   const downloadFile = async() => {
     const blob = new Blob([chubData], {type: "text/plain"})
@@ -68,16 +74,31 @@ export default function Home() {
 
     console.log(chubJson)
 
-
-    setError(false)
-    setErrMessage("")
-
     setChubData(chubJson)
 
   }
 
   const convertLorebook = async(xoulJson) => {
-    let chubJson = {description: xoulJson.description, name: xoulJson.name};
+    let chubEntries = {}
+    let chubJson = {name: xoulJson.name, description: xoulJson.description, is_creation: false, scan_depth: numScanned, 
+      token_budget: tokensPerLorebookEntry * Number(numEntries), recursive_scanning: recursiveScan, entries: chubEntries};
+
+    const entryArray = xoulJson.embedded.sections
+
+    entryArray.map((element, index) => {
+      chubEntries[index + 1] =  {uid: index + 1, case_sensitive: false, name: element.name, comment: element.name, 
+        content: element.text, disable: false, enabled: true, id: index + 1, key: element.keywords, keys: element.keywords,
+      probability: 100, selective: false}
+    })
+
+    console.log(chubJson)
+    
+    //convert this back into json format
+    chubJson = JSON.stringify(chubJson)
+
+    console.log(chubJson)
+
+    setChubData(chubJson)
   }
   
   const convertData = async(event) => {
@@ -98,7 +119,6 @@ export default function Home() {
       setError(true)
       return
     }
-
     setChubName("CHUB_" + file.name)
 
     let text = ""
@@ -127,13 +147,56 @@ export default function Home() {
       convertXoul(xoulJson);
     }
     console.log("file name: " + file.name);
+
+    setError(false)
+    setErrMessage("")
   }
   
   return (
-    <div className="grid items-center justify-items-center">
-      <p>NOTE: you will have to put in the tagline and creator notes yourself; as far as I know, Chub cant let you import that</p>
+    <div className="grid items-center justify-items-center gap-y-3">
+      <p>NOTE: for the xouls, you will have to put in the tagline and creator notes yourself; as far as I know, Chub cant let you import that</p>
+      <p>Additionally, for lorebooks you have to put in the loreboko name and description yourself, it's for some reason not imported. Also,
+        for some reason the scan-depth and token budget don't get imported so that has to be put in manually. 
+      </p>
       <br></br>
-      <p>Currently this can convert xouls and lorebooks (not yet added, will be by the end of today) to the right format. Apologies for the bad UI I dont like doing frontend stuff.</p>
+      <p>Currently this can convert xouls and lorebooks to the right format. Apologies for the bad UI I dont like doing frontend stuff.</p>
+      <br></br>
+
+      <div className="flex items-center gap-x-2">
+        <input type="checkbox" id="recursiveCheck" checked={recursiveScan} onClick={() => {setRecursiveScan(!recursiveScan)}}/>
+        <label htmlFor="recursiveCheck">Enable Recursive Scan for Lorebooks (chub doesn't have it yet tho)</label>
+      </div>
+
+      <div className="flex items-center gap-x-2">
+        <p>Put in the max number of lorebook entries you'd like to have in memory at the same time (probably not over 10) [THIS NO WORKY!!]: </p>
+        <TextField size="small" placeholder="Number of Entries" value={numEntries} onChange={(e) => {
+          const newCount = e.target.value
+          //checking if it's a valid number or empty
+          if(newCount === "" || (newCount * 100 > 10 && newCount.indexOf(".") === -1))
+          {
+            setNumEntries(newCount)
+          }
+          else
+          {
+            alert("Put in a valid value bro")
+          }}}/>
+      </div>
+
+      <div className="flex items-center gap-x-2">
+        <p>Put in the scan depth (how many messages from the most recent it scans for lorebook entries)  [THIS NO WORKY!!]: </p>
+        <TextField size="small" placeholder="Number of Messages Scanned" value={numScanned} onChange={(e) => {
+          const newScanCount = e.target.value
+          //checking if it's a valid number or empty
+          if(newScanCount === "" || (newScanCount * 100 > 10 && newScanCount.indexOf(".") === -1))
+          {
+            setScanCount(newScanCount)
+          }
+          else
+          {
+            alert("Put in a valid value bro")
+          }}}/>
+      </div>
+
       <br></br>
       <p>Drop Your Json File Here:</p>
       <label className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700">
@@ -143,8 +206,9 @@ export default function Home() {
       <br></br>
       {hasError ? (<p>ERROR: {errMessage}</p>) : (<p></p>)}
       {chubData != "" ? (
-        <div>
+        <div className="grid items-center justify-items-center">
           <p>File Ready for {chubFileName}! Click here To Download:</p>
+          <br></br>
           <Button variant="contained" color="error" onClick={downloadFile}>Download New File For Chub</Button>
         </div>
         ) : (<p></p>)}
