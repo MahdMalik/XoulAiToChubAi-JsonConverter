@@ -1,3 +1,10 @@
+This is a repository to just quickly convert you json files from xoul ai to chub ai. Made this primarily for myself, but leaving it up for anyone else who also needs to still do this 2 months after xoul's shutdown. Right now it supports doing xouls one at a time. I am going to change it to allow conversion of lorebooks too and multiple xouls, hopefully by the end of today.
+
+To use, just visit this vercel site.
+
+
+Ignore the stuff below.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
