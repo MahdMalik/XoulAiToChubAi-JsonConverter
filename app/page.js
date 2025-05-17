@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@mui/material";
 import { useState } from "react";
 
-export default function Home() {
+export default function Home() {  
   const [hasError, setError] = useState(false)
   const [errMessage, setErrMessage] = useState("")
   const [chubFileName, setChubName] = useState("")
@@ -41,43 +41,8 @@ export default function Home() {
       reader.readAsText(file);
     });
   }
-  
-  const convertData = async(event) => {
-    const file = event.target.files[0]
 
-    if(!file)
-    {
-      setErrMessage("Error converting: seems I can't open the file.")
-      setError(true);
-      return;
-    }
-
-    //first split by periods, get the last line after the period to get hte extension
-    const extension = file.name.split(".").pop().toLowerCase();
-    if(extension != "json")
-    {
-      setErrMessage("Plz submit a valid json file")
-      setError(true)
-      return
-    }
-
-    setChubName("CHUB_" + file.name)
-
-    let text = ""
-    try
-    {
-      text = await readFunct(file);
-    }
-    catch(error)
-    {
-      setErrMessage("Error parsing the file: " + error)
-      return;
-    }
-
-    //this is the xoul parsed and stuff into an object. Now the fun begins!
-    const xoulJson = JSON.parse(text);
-    console.log(xoulJson);
-
+  const convertXoul = async(xoulJson) => {
     let chubData = {}
 
     let chubJson = {spec: "chara_card_v2", spec_version: "2.0", data: chubData};
@@ -109,6 +74,58 @@ export default function Home() {
 
     setChubData(chubJson)
 
+  }
+
+  const convertLorebook = async(xoulJson) => {
+    let chubJson = {description: xoulJson.description, name: xoulJson.name};
+  }
+  
+  const convertData = async(event) => {
+    const file = event.target.files[0]
+
+    if(!file)
+    {
+      setErrMessage("Error converting: seems I can't open the file. My fault og")
+      setError(true);
+      return;
+    }
+
+    //first split by periods, get the last line after the period to get hte extension
+    const extension = file.name.split(".").pop().toLowerCase();
+    if(extension != "json")
+    {
+      setErrMessage("Plz submit a valid json file")
+      setError(true)
+      return
+    }
+
+    setChubName("CHUB_" + file.name)
+
+    let text = ""
+    try
+    {
+      text = await readFunct(file);
+    }
+    catch(error)
+    {
+      setErrMessage("Error parsing the file: " + error)
+      return;
+    }
+
+    //this is the xoul parsed and stuff into an object. Now the fun begins!
+    const xoulJson = JSON.parse(text);
+    console.log(xoulJson);
+
+    const isLorebook = xoulJson.embedded != null && xoulJson.embedded.asset_type != null && xoulJson.embedded.asset_type == "lorebook"
+
+    if(isLorebook)
+    {
+      convertLorebook(xoulJson)
+    }
+    else
+    {
+      convertXoul(xoulJson);
+    }
     console.log("file name: " + file.name);
   }
   
@@ -116,7 +133,7 @@ export default function Home() {
     <div className="grid items-center justify-items-center">
       <p>NOTE: you will have to put in the tagline and creator notes yourself; as far as I know, Chub cant let you import that</p>
       <br></br>
-      <p>Currently this can convert xouls and lorebooks to the right format. Apologies for the bad UI I dont like doing frontend stuff.</p>
+      <p>Currently this can convert xouls and lorebooks (not yet added, will be by the end of today) to the right format. Apologies for the bad UI I dont like doing frontend stuff.</p>
       <br></br>
       <p>Drop Your Json File Here:</p>
       <label className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700">
