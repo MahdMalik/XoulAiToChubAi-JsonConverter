@@ -1,4 +1,4 @@
-This is a repository to just quickly convert you json files from xoul ai to chub ai. Made this primarily for myself, but leaving it up for anyone else who also needs to still do this 2 months after xoul's shutdown. Right now it supports doing xouls one at a time. I am going to change it to allow conversion of lorebooks too and multiple xouls, hopefully by the end of today.
+This is a repository to just quickly convert you json files from xoul ai to chub ai. Made this primarily for myself, but leaving it up for anyone else who also needs to still do this 2 months after xoul's shutdown. Right now it supports doing xouls and lorebooks one at a time.
 
 To use, just visit the attached vercel site. If you have any questions, feel free to email me at mahdmahdmalik@gmail.com
 
