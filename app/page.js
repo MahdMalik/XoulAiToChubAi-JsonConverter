@@ -177,7 +177,7 @@ export default function Home() {
   return (
     <div className="grid items-center justify-items-center gap-y-3">
       <div className="flex-vertical items-center justify-items-center">
-        <p>NOTE: you have to do it one xoul/lorebook at a time. I unfortunately don't have time to code it to take a folder and automatically
+        <p>NOTE: you have to do it one xoul/lorebook at a time. I unfortunately dont have time to code it to take a folder and automatically
           parse all xouls and lorebooks. Feel free to fork this if you want to do that.</p>
         <a href="https://github.com/MahdMalik/XoulAiToChubAi-JsonConverter" className="text-blue-500">Heres A Link To The Github</a>
       </div>
