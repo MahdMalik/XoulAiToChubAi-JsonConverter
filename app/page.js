@@ -179,12 +179,12 @@ export default function Home() {
       <div className="flex-vertical items-center justify-items-center">
         <p>NOTE: you have to do it one xoul/lorebook at a time. I unfortunately don't have time to code it to take a folder and automatically
           parse all xouls and lorebooks. Feel free to fork this if you want to do that.</p>
-        <a href="https://github.com/MahdMalik/XoulAiToChubAi-JsonConverter" className="text-blue-500">Here's A Link To The Github</a>
+        <a href="https://github.com/MahdMalik/XoulAiToChubAi-JsonConverter" className="text-blue-500">Heres A Link To The Github</a>
       </div>
 
       <p>NOTE 2: for the xouls, you will have to put in the tagline and creator notes yourself; as far as I know, Chub cant let you import that</p>
-      <p>Additionally, for lorebooks you have to put in the lorebook name and description yourself, it's for some reason not imported. Also,
-        for some reason the scan-depth and token budget don't get imported so that has to be put in manually.
+      <p>Additionally, for lorebooks you have to put in the lorebook name and description yourself, its for some reason not imported. Also,
+        for some reason the scan-depth and token budget dont get imported so that has to be put in manually.
       </p>
       <br></br>
       <p>Currently this can convert xouls and lorebooks to the right format. Apologies for the bad UI I dont like doing frontend stuff.</p>
@@ -193,12 +193,12 @@ export default function Home() {
       <div className="flex items-center gap-x-2">
         {/* Input field for if recursive scan is enabled or not */}
         <input type="checkbox" id="recursiveCheck" checked={recursiveScan} onClick={() => {setRecursiveScan(!recursiveScan)}}/>
-        <label htmlFor="recursiveCheck">Enable Recursive Scan for Lorebooks (chub doesn't have it yet tho)</label>
+        <label htmlFor="recursiveCheck">Enable Recursive Scan for Lorebooks (chub doesnt have it yet tho)</label>
       </div>
 
       <div className="flex items-center gap-x-2">
          {/* Input field that will be used for token budget, by doing tokenBudget = lorebookEntries * tokensPerEntry */}
-        <p>Put in the max number of lorebook entries you'd like to have in memory at the same time (probably not over 10) [THIS NO WORKY!!]: </p>
+        <p>Put in the max number of lorebook entries youd like to have in memory at the same time (probably not over 10) [THIS NO WORKY!!]: </p>
         <TextField size="small" placeholder="Number of Entries" value={numEntries} onChange={(e) => {
           const newCount = e.target.value
           //checking if it's a valid number or empty
