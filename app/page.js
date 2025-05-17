@@ -114,9 +114,9 @@ export default function Home() {
   
   return (
     <div className="grid items-center justify-items-center">
-      <p>NOTE: you will have to put in the tagline and creator's notes yourself; as far as I know, Chub can't let you import that</p>
+      <p>NOTE: you will have to put in the tagline and creator notes yourself; as far as I know, Chub cant let you import that</p>
       <br></br>
-      <p>Currently this can convert xouls and lorebooks to the right format. Apologies for the bad UI I don't like doing frontend stuff.</p>
+      <p>Currently this can convert xouls and lorebooks to the right format. Apologies for the bad UI I dont like doing frontend stuff.</p>
       <br></br>
       <p>Drop Your Json File Here:</p>
       <label className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700">
